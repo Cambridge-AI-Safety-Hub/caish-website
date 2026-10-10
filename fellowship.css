@@ -54,6 +54,8 @@ body.fellowship-page {
 .fellowship-title-name { display: block; padding-left: .28em; font-style: italic; font-weight: 400; letter-spacing: -.035em; }
 .fellowship-page .fellowship-summary { font-family: var(--fellowship-serif); font-size: clamp(1.2rem,1.9vw,1.4rem); font-weight: 400; font-variation-settings: "opsz" 24; line-height: 1.55; letter-spacing: -.01em; max-width: 40ch; margin: 0; text-wrap: pretty; }
 .fellowship-page .fellowship-entry-note { font-size: 1rem; line-height: 1.5; margin: 14px 0 0; color: var(--fellowship-copy); }
+.fellowship-page .fellowship-lent-note { margin-top: 6px; }
+.fellowship-page .fellowship-lent-note a { color: var(--fellowship-ink); }
 .fellowship-facts { display: grid; grid-template-columns: auto auto auto; justify-content: start; list-style: none; gap: 0; margin: 24px 0; padding: 16px 0; border-block: 1px solid var(--fellowship-line); }
 .fellowship-page .fellowship-facts li { font-family: var(--fellowship-label); font-size: .75rem; color: var(--fellowship-copy); line-height: 1.65; white-space: normal; padding: 0 14px; }
 .fellowship-facts li + li::before { display: none; }
