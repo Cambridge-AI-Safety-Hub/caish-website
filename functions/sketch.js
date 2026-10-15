@@ -1,4 +1,4 @@
-// Netlify Function: receive project sketch submissions from the AI Assurance
+// Server function: receive project sketch submissions from the AI Assurance
 // course and upsert them into the HAP Airtable base (one row per email).
 // The Airtable token lives in the AIRTABLE_SKETCH_TOKEN env var, server-side
 // only. Identity comes from the caller's Supabase session token, verified
@@ -17,10 +17,12 @@ function respond(statusCode, message) {
   return { statusCode, headers: CORS_HEADERS, body: JSON.stringify({ message }) };
 }
 
+const PUBLIC_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvZ2d6cGRlbWRteXZubGh0anRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0NjE3NzcsImV4cCI6MjA5ODAzNzc3N30.2vsdd5SS5v4MQ4krugiSLe5ziXvx2iHTlpotC6iO6Cs';
+
 async function verifyUser(token) {
   // The anon key is the public client key; it only lets us ask "whose token
-  // is this?". Read it from env with a fallback to the one shipped in the site.
-  const anonKey = process.env.SUPABASE_ANON_KEY || '';
+  // is this?". It is the same public key as course/verification/supabase-config.js.
+  const anonKey = process.env.SUPABASE_ANON_KEY || PUBLIC_ANON_KEY;
   const response = await fetch(SUPABASE_URL + '/auth/v1/user', {
     headers: { Authorization: 'Bearer ' + token, apikey: anonKey }
   });

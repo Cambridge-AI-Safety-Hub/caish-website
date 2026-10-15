@@ -753,7 +753,7 @@ const CourseWorksheet = {
     if (!name) { status.textContent = 'Could not identify your account. Sign in again.'; return; }
     status.textContent = 'Submitting...';
     try {
-      const response = await fetch('/.netlify/functions/sketch', {
+      const response = await fetch('/api/sketch', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

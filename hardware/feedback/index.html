@@ -561,7 +561,7 @@
       data.website = form.elements.website.value; // honeypot
       submit.disabled = true;
       status.textContent = 'Sending…';
-      fetch('/.netlify/functions/feedback', {
+      fetch('/api/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)

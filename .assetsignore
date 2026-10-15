@@ -1,0 +1,20 @@
+# Files Cloudflare should not publish on the website
+.git
+.github
+.claude
+.vscode
+.wrangler
+.dev.vars
+node_modules
+worker
+functions
+tools
+docs
+README.md
+CLAUDE.md
+AGENTS.md
+LICENSE
+wrangler.jsonc
+netlify.toml
+cache-bust.sh
+*.sh

@@ -1,6 +1,7 @@
-// Vercel Serverless Function to redirect to the most upcoming CAISH social event
+// Server function (runs at /api/<name>) to redirect to the most upcoming HDWSA event
 // This keeps the API key secure on the server side
 
+const LUMA_EVENTS_URL = 'https://api.lu.ma/public/v1/calendar/list-events';
 const LUMA_GET_EVENT_URL = 'https://api.lu.ma/public/v1/event/get';
 
 // Fetch individual events by ID from the LUMA_EXTRA_EVENT_IDS env var
@@ -30,24 +31,31 @@ async function fetchExtraEvents(apiKey) {
     .map(r => r.value);
 }
 
-export default async function handler(req, res) {
-  // Set cache headers - cache for 1 hour since events don't change that frequently
-  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+exports.handler = async (event) => {
+  const headers = {
+    'Cache-Control': 's-maxage=3600, stale-while-revalidate=86400'
+  };
 
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (event.httpMethod !== 'GET') {
+    return {
+      statusCode: 405,
+      headers,
+      body: 'Method not allowed'
+    };
   }
 
-  const API_KEY = process.env.LUMA_API_KEY;
+  const apiKey = process.env.LUMA_API_KEY;
 
-  if (!API_KEY) {
+  if (!apiKey) {
     console.error('LUMA_API_KEY environment variable not set');
-    return res.status(500).send('API configuration error');
+    return {
+      statusCode: 500,
+      headers,
+      body: 'API configuration error'
+    };
   }
 
   try {
-    const LUMA_EVENTS_URL = 'https://api.lu.ma/public/v1/calendar/list-events';
-
     // Fetch all pages of events from the Luma API using cursor-based pagination
     let allEntries = [];
     let cursor = null;
@@ -62,7 +70,7 @@ export default async function handler(req, res) {
       const response = await fetch(url.toString(), {
         method: 'GET',
         headers: {
-          'x-luma-api-key': API_KEY,
+          'x-luma-api-key': apiKey,
           'Content-Type': 'application/json'
         }
       });
@@ -70,7 +78,11 @@ export default async function handler(req, res) {
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Luma API error:', response.status, errorText);
-        return res.status(500).send('Failed to fetch events from Luma');
+        return {
+          statusCode: 500,
+          headers,
+          body: 'Failed to fetch events from Luma'
+        };
       }
 
       const data = await response.json();
@@ -84,7 +96,7 @@ export default async function handler(req, res) {
     }
 
     // Fetch extra events not managed by the CAISH calendar
-    const extraEntries = await fetchExtraEvents(API_KEY);
+    const extraEntries = await fetchExtraEvents(apiKey);
     const seenIds = new Set(allEntries.map(e => (e.event || e).api_id).filter(Boolean));
     for (const entry of extraEntries) {
       const id = (entry.event || entry).api_id;
@@ -96,54 +108,58 @@ export default async function handler(req, res) {
 
     let events = allEntries;
 
-    // Filter for CAISH social events
-    // Check name and description for CAISH reference (abbreviation or full name)
-    const isCaishRelated = (text) => {
-      const upper = text.toUpperCase();
-      return upper.includes('CAISH') || upper.includes('CAMBRIDGE AI SAFETY HUB');
-    };
-
+    // Filter for HDWSA (How Do We Solve Alignment) events
     events = events.filter(entry => {
-      const event = entry.event || entry;
-      const name = (event.name || '').toLowerCase();
-      if (!name.includes('social')) return false;
-      return isCaishRelated(event.name || '') || isCaishRelated(event.description || '');
+      const eventData = entry.event || entry;
+      const name = (eventData.name || '').toLowerCase();
+      return name.includes('how do we solve alignment');
     });
 
-    // Filter to only show upcoming events (events that haven't happened yet)
     const now = new Date();
-    events = events.filter(entry => {
-      const event = entry.event || entry;
-      const startDate = new Date(event.start_at || event.start_time);
-      return startDate >= now;
-    });
 
-    // Sort by start time (upcoming first)
+    // Sort ascending by start time
     events.sort((a, b) => {
       const dateA = new Date((a.event || a).start_at || (a.event || a).start_time);
       const dateB = new Date((b.event || b).start_at || (b.event || b).start_time);
       return dateA - dateB;
     });
 
-    // Get the first (most upcoming) event
     if (events.length === 0) {
-      console.error('No upcoming CAISH social events found');
-      return res.status(404).send('No upcoming CAISH social events found. Please check back later!');
+      console.error('No HDWSA events found');
+      return {
+        statusCode: 404,
+        headers,
+        body: 'No "How Do We Solve Alignment" club events found. Please check back later!'
+      };
     }
 
-    const nextEvent = events[0];
-    const event = nextEvent.event || nextEvent;
+    // Pick the next upcoming event; fall back to the most recent past event
+    const nextEvent =
+      events.find(e => new Date((e.event || e).start_at || (e.event || e).start_time) >= now)
+      || events[events.length - 1];
+    const eventData = nextEvent.event || nextEvent;
 
     // Get the Luma URL
-    const lumaUrl = event.url || `https://lu.ma/${event.api_id || event.id}`;
+    const lumaUrl = eventData.url || `https://lu.ma/${eventData.api_id || eventData.id}`;
 
-    console.log(`Redirecting to upcoming CAISH social: ${event.name} at ${lumaUrl}`);
+    console.log(`Redirecting to HDWSA event: ${eventData.name} at ${lumaUrl}`);
 
-    // Redirect to the event page
-    return res.redirect(302, lumaUrl);
+    // Return a redirect response
+    return {
+      statusCode: 302,
+      headers: {
+        ...headers,
+        'Location': lumaUrl
+      },
+      body: ''
+    };
 
   } catch (error) {
     console.error('Error fetching events:', error);
-    return res.status(500).send('Unable to load social events at this time. Please try again later.');
+    return {
+      statusCode: 500,
+      headers,
+      body: 'Unable to load HDWSA events at this time. Please try again later.'
+    };
   }
-}
+};
