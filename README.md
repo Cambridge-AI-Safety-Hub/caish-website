@@ -35,7 +35,7 @@ Every change goes through a pull request. Nobody pushes to `main` directly.
 | `enhancements.js` | Small visual touches shared by all pages (mobile menu, fade-ins, link underlines). |
 | `sw.js` | Service worker that makes repeat visits load faster. |
 | `images/` | All photos and logos. |
-| `videos/` | Short hover clips only. Full videos live in Cloudflare R2 (see Hosting). |
+| `videos/` | The HAP 2026 film shown on /hardware. Cloudflare serves files up to 25 MB, so compress a new video below that before adding it. |
 | `course/verification/` | The AI Workload Verification reading course, with sign-in and saved progress. |
 | `hardware/schedule/` | HAP 2026 week schedule (unlisted). |
 | `participants/` | HAP 2026 participant directory (unlisted, built by `tools/participants/`). |
@@ -54,7 +54,7 @@ The navigation bar and footer are copied into every page. To add a menu item, ch
 
 - Main: home (`index`), about, hiring, privacy, terms.
 - Programmes: fellowship, policy, desk, mars, research (MARS publications), hardware (HAP), course/verification.
-- Unlisted: apply (Fellowship or Desk chooser, shared directly), course (HAP 2026 pre-work), feedback, video, hannes, cam, puria, hardware/schedule, participants, verify.
+- Unlisted: apply (Fellowship or Desk chooser, shared directly), course (HAP 2026 pre-work), feedback, hardware/schedule, participants, verify.
 - Small forwarding pages: alignmentfellowship, mail (newsletter sign-up), mars-apply, hardware-eoi, mentor.
 
 ## Common tasks
@@ -64,7 +64,7 @@ The navigation bar and footer are copied into every page. To add a menu item, ch
 - Certificates: add an entry to `data/fellows.json` following the existing ones. The certificate link is caish.org/verify/&lt;ID&gt;.
 - Links: caish.org/talk points at the current term's opening talk. Change the `/talk` line in `_redirects` each term. /events, /hdwsa, /social and /lunch all go to the CAISH Luma calendar.
 - HAP: the next-edition checklist is in a comment at the top of `hardware.html`.
-- Videos: upload the file to the R2 bucket and link it by its r2.dev address. The bucket address is allowed in the `Content-Security-Policy` line of `_headers`.
+- Videos: put the file in `videos/` (under 25 MB) and link it as `/videos/<name>.mp4`. Anything longer goes on YouTube or LinkedIn and gets linked or embedded.
 - Participants: `AIRTABLE_TOKEN=... python3 tools/participants/build.py` rebuilds the directory from Airtable. It only includes people who gave website consent. Andrea Caforio declined, so never add him by hand.
 - Roles: the wording on `roles/*.html` is the public record for visa sponsorship. Change markup if needed, but leave the words alone unless a director says otherwise.
 
@@ -73,7 +73,6 @@ The navigation bar and footer are copied into every page. To add a menu item, ch
 - Cloudflare: the site is a Worker called `caish-website` on the CAISH Cloudflare account (login ops@caish.org, in the Core vault in 1Password). Cloudflare also holds the caish.org domain and DNS.
 - Deploys: Cloudflare watches this repository. A merge to `main` builds and publishes the site. Every other branch gets a preview link. The build runs `bash cache-bust.sh`, then `npx wrangler deploy`.
 - Secrets: none. The site has no server code, so there are no API keys to look after.
-- Videos: the full-length videos are in the Cloudflare R2 bucket `caish-videos`, served from `pub-fd3e7e854dc549da85f015f509d5ec9a.r2.dev`.
 - Course sign-in: the verification course uses a Supabase project (`joggzpdemdmyvnlhtjte`) for logins and saved progress. The key in `course/verification/supabase-config.js` is public by design.
 
 Which person owns which account is recorded in the CAISH systems and access doc.
@@ -84,5 +83,4 @@ Which person owns which account is recorded in the CAISH systems and access doc.
 - About 130 images in `images/` are no longer used by any page.
 - verify.html says "Alignment Fellowship Certificate" in its title even for HAP certificates.
 - `course/verification/4.html` asks people to share documents with gaurav@caish.org.
-- The R2 video bucket (`caish-videos`) is on Gaurav's personal Cloudflare account and needs moving to the CAISH one, which changes the video addresses in hannes.html, cam.html, puria.html, hardware.html and `_headers`.
 - The Supabase project for course sign-in needs an ops@ owner.
