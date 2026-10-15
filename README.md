@@ -1,6 +1,6 @@
 # caish.org
 
-This is the website of the Cambridge AI Safety Hub (CAISH). It is plain HTML and CSS with no framework, so every page is one file you can open and edit. Cloudflare publishes it automatically whenever `main` changes.
+This is the website of the Cambridge AI Safety Hub (CAISH). It is plain HTML and CSS with no framework and no server code, so every page is one file you can open and edit. Cloudflare publishes it automatically whenever `main` changes.
 
 ## Who looks after it
 
@@ -37,19 +37,16 @@ Every change goes through a pull request. Nobody pushes to `main` directly.
 | `images/` | All photos and logos. |
 | `videos/` | Short hover clips only. Full videos live in Cloudflare R2 (see Hosting). |
 | `course/verification/` | The AI Workload Verification reading course, with sign-in and saved progress. |
-| `hardware/` | HAP sub-pages: `schedule/` (unlisted) and `feedback/` (course feedback form). |
+| `hardware/schedule/` | HAP 2026 week schedule (unlisted). |
 | `participants/` | HAP 2026 participant directory (unlisted, built by `tools/participants/`). |
 | `roles/` | Job descriptions linked from /hiring. |
 | `data/fellows.json` | Certificate records shown at caish.org/verify/&lt;ID&gt;. |
-| `functions/` | Small server functions served at `/api/<name>` (see below). |
-| `worker/index.js` | Connects the server functions to Cloudflare. Rarely needs changing. |
-| `_redirects` | Short links and old addresses (/talk, /eoi, /careers and so on). |
+| `_redirects` | Short links and old addresses (/talk, /eoi, /hdwsa, /careers and so on). |
 | `_headers` | Security and caching headers. |
 | `wrangler.jsonc` | Cloudflare settings. |
 | `cache-bust.sh` | Runs on every deploy and stamps CSS and JS links with a version so browsers fetch new files. |
 | `tools/` | Scripts that are run by hand, never published. |
 | `docs/` | Notes for maintainers, never published. `docs/archive/` keeps old versions of pages that matter (such as the July 2026 operations job advert). |
-| `netlify.toml` | Settings from the old Netlify hosting. Delete once Netlify is closed. |
 
 The navigation bar and footer are copied into every page. To add a menu item, change it in each page (Claude can do this in one go).
 
@@ -57,30 +54,15 @@ The navigation bar and footer are copied into every page. To add a menu item, ch
 
 - Main: home (`index`), about, hiring, privacy, terms.
 - Programmes: fellowship, policy, desk, mars, research (MARS publications), hardware (HAP), course/verification.
-- Unlisted: apply (Fellowship or Desk chooser, shared directly), course (HAP 2026 pre-work), feedback, events (live Luma list), video, hannes, cam, puria, hardware/schedule, participants, verify.
-- Small forwarding pages: alignmentfellowship, mail (newsletter sign-up), mars-apply, hardware-eoi, mentor, hdwsa, social, lunch.
-
-### Server functions
-
-These run on Cloudflare and keep API keys off the public site.
-
-| Address | What it does | Needs |
-|---|---|---|
-| `/api/events` | Lists upcoming CAISH events from Luma for events.html | `LUMA_API_KEY` |
-| `/api/hdwsa` | Sends visitors (via caish.org/hdwsa) to the next How Do We Solve Alignment event | `LUMA_API_KEY` |
-| `/api/social` | Sends visitors (via caish.org/social) to the next social | `LUMA_API_KEY` |
-| `/api/lunches` | Sends visitors (via caish.org/lunch) to the next lunch | `LUMA_API_KEY` |
-| `/api/feedback` | Saves course feedback into the HAP Airtable base | `AIRTABLE_SKETCH_TOKEN` |
-| `/api/sketch` | Saves project sketches from the verification course into the HAP Airtable base | `AIRTABLE_SKETCH_TOKEN` |
-
-`LUMA_EXTRA_EVENT_IDS` (optional) is a comma-separated list of Luma event IDs to include even if they are not on the CAISH calendar.
+- Unlisted: apply (Fellowship or Desk chooser, shared directly), course (HAP 2026 pre-work), feedback, video, hannes, cam, puria, hardware/schedule, participants, verify.
+- Small forwarding pages: alignmentfellowship, mail (newsletter sign-up), mars-apply, hardware-eoi, mentor.
 
 ## Common tasks
 
 - Text: find the page file and edit the words. Search the repository for a phrase if you are unsure which file it is in.
 - People: put the photo in `images/` with a lowercase, hyphenated name (`jane-doe.jpg`), under 500 KB and at most 1200 px wide. Copy an existing person's card in the page and change it.
 - Certificates: add an entry to `data/fellows.json` following the existing ones. The certificate link is caish.org/verify/&lt;ID&gt;.
-- Talk: point caish.org/talk at the new term's Luma event by changing the `/talk` line in `_redirects`.
+- Links: caish.org/talk points at the current term's opening talk. Change the `/talk` line in `_redirects` each term. /events, /hdwsa, /social and /lunch all go to the CAISH Luma calendar.
 - HAP: the next-edition checklist is in a comment at the top of `hardware.html`.
 - Videos: upload the file to the R2 bucket and link it by its r2.dev address. The bucket address is allowed in the `Content-Security-Policy` line of `_headers`.
 - Participants: `AIRTABLE_TOKEN=... python3 tools/participants/build.py` rebuilds the directory from Airtable. It only includes people who gave website consent. Andrea Caforio declined, so never add him by hand.
@@ -90,10 +72,9 @@ These run on Cloudflare and keep API keys off the public site.
 
 - Cloudflare: the site is a Worker called `caish-website` on the CAISH Cloudflare account (login ops@caish.org, in the Core vault in 1Password). Cloudflare also holds the caish.org domain and DNS.
 - Deploys: Cloudflare watches this repository. A merge to `main` builds and publishes the site. Every other branch gets a preview link. The build runs `bash cache-bust.sh`, then `npx wrangler deploy`.
-- Secrets: `LUMA_API_KEY`, `AIRTABLE_SKETCH_TOKEN` and `LUMA_EXTRA_EVENT_IDS` are set under Workers & Pages > caish-website > Settings > Variables and secrets. Copies are in 1Password (Core vault). They never go in the repository.
+- Secrets: none. The site has no server code, so there are no API keys to look after.
 - Videos: the full-length videos are in the Cloudflare R2 bucket `caish-videos`, served from `pub-fd3e7e854dc549da85f015f509d5ec9a.r2.dev`.
 - Course sign-in: the verification course uses a Supabase project (`joggzpdemdmyvnlhtjte`) for logins and saved progress. The key in `course/verification/supabase-config.js` is public by design.
-- Logs: Workers & Pages > caish-website > Logs shows errors from the server functions.
 
 Which person owns which account is recorded in the CAISH systems and access doc.
 

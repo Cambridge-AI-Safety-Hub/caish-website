@@ -6,8 +6,6 @@
 .wrangler
 .dev.vars
 node_modules
-worker
-functions
 tools
 docs
 README.md
@@ -15,6 +13,5 @@ CLAUDE.md
 AGENTS.md
 LICENSE
 wrangler.jsonc
-netlify.toml
 cache-bust.sh
 *.sh

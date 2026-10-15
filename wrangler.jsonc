@@ -1,15 +1,11 @@
 // Cloudflare settings for caish.org. See README.md, "Hosting".
+// The site is static files only: Cloudflare publishes the repository folder as it is.
 {
   "name": "caish-website",
-  "main": "worker/index.js",
   "compatibility_date": "2026-04-01",
-  "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "directory": ".",
-    "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
-    "not_found_handling": "404-page",
-    "run_worker_first": ["/api/*", "/.netlify/functions/*"]
-  },
-  "observability": { "enabled": true }
+    "not_found_handling": "404-page"
+  }
 }

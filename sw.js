@@ -18,7 +18,6 @@ const PRECACHE_ASSETS = [
   '/index.html',
   '/fellowship.html',
   '/mars.html',
-  '/events.html',
   '/about.html',
   '/hiring.html',
   '/video.html',
