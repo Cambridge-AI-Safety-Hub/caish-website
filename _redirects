@@ -1,0 +1,22 @@
+# Short links and redirects for caish.org on Cloudflare.
+# Format: from-path  to-url  status   (301 = permanent, 302 = temporary, 200 = serve that page at this address)
+
+# Expression-of-interest form
+/eoi  https://airtable.com/appJHPLBwGSa1eM4g/pagOfdY1xdlYd1LQM/form  301
+
+# Opening talk, repointed each term to the current Luma event
+/talk  https://luma.com/dw0ym13f  302
+
+# Gaurav's booking pages
+/gaurav  https://calendar.caish.org/gaurav/meet  301
+/gwide  https://calendar.caish.org/gaurav/wide  301
+
+# Old page names
+/careers  /hiring  301
+/hap  /hardware  301
+/hap-2026-participants-3b604ec9ee  /participants/  301
+/hap/*  /hardware  301
+/hap-2026-participants-3b604ec9ee/*  /participants/:splat  301
+
+# Certificate links: every /verify/<ID> address shows verify.html, which reads the ID from the address
+/verify/*  /verify  200

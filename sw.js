@@ -30,7 +30,6 @@ const PRECACHE_ASSETS = [
   '/enhancements.js?v=6290bc0f',
   '/images/logo.png',
   '/images/favicon.png',
-  '/images/caish.gif',
   '/verify.html',
   '/data/fellows.json'
 ];

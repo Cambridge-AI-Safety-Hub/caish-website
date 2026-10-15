@@ -1,6 +1,7 @@
-// Vercel Serverless Function to fetch events from Luma API
+// Server function (runs at /api/<name>) to redirect to the most upcoming CAISH social event
 // This keeps the API key secure on the server side
 
+const LUMA_EVENTS_URL = 'https://api.lu.ma/public/v1/calendar/list-events';
 const LUMA_GET_EVENT_URL = 'https://api.lu.ma/public/v1/event/get';
 
 // Fetch individual events by ID from the LUMA_EXTRA_EVENT_IDS env var
@@ -30,27 +31,31 @@ async function fetchExtraEvents(apiKey) {
     .map(r => r.value);
 }
 
-export default async function handler(req, res) {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET');
-  res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
+exports.handler = async (event) => {
+  const headers = {
+    'Cache-Control': 's-maxage=3600, stale-while-revalidate=86400'
+  };
 
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (event.httpMethod !== 'GET') {
+    return {
+      statusCode: 405,
+      headers,
+      body: 'Method not allowed'
+    };
   }
 
-  const API_KEY = process.env.LUMA_API_KEY;
+  const apiKey = process.env.LUMA_API_KEY;
 
-  if (!API_KEY) {
+  if (!apiKey) {
     console.error('LUMA_API_KEY environment variable not set');
-    return res.status(500).json({ error: 'API configuration error' });
+    return {
+      statusCode: 500,
+      headers,
+      body: 'API configuration error'
+    };
   }
 
   try {
-    const LUMA_EVENTS_URL = 'https://api.lu.ma/public/v1/calendar/list-events';
-    const CAISH_FULL_NAME = 'CAMBRIDGE AI SAFETY HUB';
-
     // Fetch all pages of events from the Luma API using cursor-based pagination
     let allEntries = [];
     let cursor = null;
@@ -65,7 +70,7 @@ export default async function handler(req, res) {
       const response = await fetch(url.toString(), {
         method: 'GET',
         headers: {
-          'x-luma-api-key': API_KEY,
+          'x-luma-api-key': apiKey,
           'Content-Type': 'application/json'
         }
       });
@@ -73,9 +78,11 @@ export default async function handler(req, res) {
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Luma API error:', response.status, errorText);
-        return res.status(503).json({
-          error: 'Unable to load events at this time. Please try again later.'
-        });
+        return {
+          statusCode: 500,
+          headers,
+          body: 'Failed to fetch events from Luma'
+        };
       }
 
       const data = await response.json();
@@ -89,7 +96,7 @@ export default async function handler(req, res) {
     }
 
     // Fetch extra events not managed by the CAISH calendar
-    const extraEntries = await fetchExtraEvents(API_KEY);
+    const extraEntries = await fetchExtraEvents(apiKey);
     const seenIds = new Set(allEntries.map(e => (e.event || e).api_id).filter(Boolean));
     for (const entry of extraEntries) {
       const id = (entry.event || entry).api_id;
@@ -101,18 +108,26 @@ export default async function handler(req, res) {
 
     let events = allEntries;
 
-    // Filter for events with CAISH in name or description
-    events = events.filter(entry => {
-      const event = entry.event || entry;
-      const name = (event.name || '').toUpperCase();
-      const description = (event.description || '').toUpperCase();
+    // Filter for CAISH social events
+    // Check name and description for CAISH reference (abbreviation or full name)
+    const isCaishRelated = (text) => {
+      const upper = text.toUpperCase();
+      return upper.includes('CAISH') || upper.includes('CAMBRIDGE AI SAFETY HUB');
+    };
 
-      return (
-        name.includes('CAISH') ||
-        name.includes(CAISH_FULL_NAME) ||
-        description.includes('CAISH') ||
-        description.includes(CAISH_FULL_NAME)
-      );
+    events = events.filter(entry => {
+      const eventData = entry.event || entry;
+      const name = (eventData.name || '').toLowerCase();
+      if (!name.includes('social')) return false;
+      return isCaishRelated(eventData.name || '') || isCaishRelated(eventData.description || '');
+    });
+
+    // Filter to only show upcoming events (events that haven't happened yet)
+    const now = new Date();
+    events = events.filter(entry => {
+      const eventData = entry.event || entry;
+      const startDate = new Date(eventData.start_at || eventData.start_time);
+      return startDate >= now;
     });
 
     // Sort by start time (upcoming first)
@@ -122,33 +137,40 @@ export default async function handler(req, res) {
       return dateA - dateB;
     });
 
-    // Filter to only show upcoming events (or events from the past week for context)
-    const now = new Date();
-    const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-
-    events = events.filter(entry => {
-      const event = entry.event || entry;
-      const startDate = new Date(event.start_at || event.start_time);
-      return startDate >= oneWeekAgo;
-    });
-
-    // Get limit from query params (for home page showing only 3)
-    const limit = req.query.limit ? parseInt(req.query.limit, 10) : null;
-
-    if (limit && limit > 0) {
-      events = events.slice(0, limit);
+    // Get the first (most upcoming) event
+    if (events.length === 0) {
+      console.error('No upcoming CAISH social events found');
+      return {
+        statusCode: 404,
+        headers,
+        body: 'No upcoming CAISH social events found. Please check back later!'
+      };
     }
 
-    return res.status(200).json({
-      events,
-      count: events.length,
-      fetched_at: new Date().toISOString()
-    });
+    const nextEvent = events[0];
+    const eventData = nextEvent.event || nextEvent;
+
+    // Get the Luma URL
+    const lumaUrl = eventData.url || `https://lu.ma/${eventData.api_id || eventData.id}`;
+
+    console.log(`Redirecting to upcoming CAISH social: ${eventData.name} at ${lumaUrl}`);
+
+    // Return a redirect response
+    return {
+      statusCode: 302,
+      headers: {
+        ...headers,
+        'Location': lumaUrl
+      },
+      body: ''
+    };
 
   } catch (error) {
     console.error('Error fetching events:', error);
-    return res.status(500).json({
-      error: 'Unable to load events at this time. Please try again later.'
-    });
+    return {
+      statusCode: 500,
+      headers,
+      body: 'Unable to load social events at this time. Please try again later.'
+    };
   }
-}
+};

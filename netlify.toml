@@ -1,6 +1,6 @@
 [build]
   command = "bash cache-bust.sh"
-  functions = "netlify/functions"
+  functions = "functions"
 
 # Security headers for all pages
 [[headers]]
@@ -59,7 +59,7 @@
 
 # Unlisted HAP participant directory
 [[headers]]
-  for = "/hap/*"
+  for = "/participants/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
     Cache-Control = "no-cache, no-store, must-revalidate"
@@ -96,7 +96,7 @@
   status = 301
   force = true
 
-# Redirect /gaurav to booking page
+# Old HAP address
 [[redirects]]
   from = "/hap"
   to = "/hardware"
@@ -109,6 +109,7 @@
   status = 301
   force = true
 
+# Gaurav's booking pages
 [[redirects]]
   from = "/gaurav"
   to = "https://calendar.caish.org/gaurav/meet"
@@ -161,6 +162,13 @@
   from = "/careers"
   to = "/hiring"
   status = 301
+  force = true
+
+# Server functions: /api/<name> runs functions/<name>.js (same address as on Cloudflare)
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
   force = true
 
 # Clean URLs

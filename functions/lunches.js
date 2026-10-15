@@ -1,4 +1,4 @@
-// Netlify Function to redirect to the most upcoming CAISH Lunches event
+// Server function (runs at /api/<name>) to redirect to the most upcoming CAISH Lunches event
 
 const LUMA_EVENTS_URL = 'https://api.lu.ma/public/v1/calendar/list-events';
 

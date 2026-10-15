@@ -1,4 +1,4 @@
-// Netlify Function: receive course feedback from /hardware/feedback and
+// Server function: receive course feedback from /hardware/feedback and
 // append it to the course_feedback table in the HAP Airtable base.
 // Anonymous by design; a honeypot field and length caps keep the junk out.
 // Reuses the AIRTABLE_SKETCH_TOKEN env var (same base).

@@ -1,11 +1,13 @@
 #!/bin/bash
 #
-# cache-bust.sh — Automatically update CSS/JS cache-busting versions
+# cache-bust.sh: stamp styles.css and enhancements.js links with a version
 #
-# Uses content hashing so versions only change when files actually change.
-# Run this after editing styles.css or enhancements.js.
+# Runs automatically on every deploy (it is the build command), so there is
+# no need to run it by hand. It puts a short hash of each file into the
+# ?v= part of every link, which makes browsers fetch the new file after a
+# change. It also bumps the service worker (sw.js) cache version.
 #
-# Usage:  ./cache-bust.sh
+# Usage:  bash cache-bust.sh
 #
 
 set -euo pipefail
@@ -40,8 +42,9 @@ JS_HASH=$(hash_file enhancements.js)
 echo "styles.css    hash: $CSS_HASH"
 echo "enhancements.js hash: $JS_HASH"
 
-# Files that reference styles.css and enhancements.js
-HTML_FILES=(index.html about.html hiring.html careers.html roles/operations.html roles/head-of-student-affairs.html fellowship.html policy.html events.html mars.html desk.html research.html verify.html privacy.html terms.html video.html hannes.html cam.html puria.html hardware.html course.html course/verification/index.html course/verification/1.html course/verification/2.html course/verification/3.html course/verification/4.html)
+# Every HTML file that links styles.css or enhancements.js with a ?v= version
+HTML_FILES=()
+while IFS= read -r file; do HTML_FILES+=("$file"); done < <(grep -rlE --include='*.html' --exclude-dir=.git --exclude-dir=docs 'styles\.css\?v=|enhancements\.js\?v=' . | sort)
 
 # Update CSS version in all HTML files
 for file in "${HTML_FILES[@]}"; do
