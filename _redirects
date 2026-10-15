@@ -11,11 +11,19 @@
 /gaurav  https://calendar.caish.org/gaurav/meet  301
 /gwide  https://calendar.caish.org/gaurav/wide  301
 
+# Event short links, now all pointing at the CAISH Luma calendar
+/events  https://luma.com/caish  302
+/hdwsa  https://luma.com/caish  302
+/social  https://luma.com/caish  302
+/lunch  https://luma.com/caish  302
+
 # Old page names
 /careers  /hiring  301
 /hap  /hardware  301
+/hardware/feedback  /course/verification/  301
 /hap-2026-participants-3b604ec9ee  /participants/  301
 /hap/*  /hardware  301
+/hardware/feedback/*  /course/verification/  301
 /hap-2026-participants-3b604ec9ee/*  /participants/:splat  301
 
 # Certificate links: every /verify/<ID> address shows verify.html, which reads the ID from the address

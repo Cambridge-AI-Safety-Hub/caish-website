@@ -11,13 +11,13 @@ You are editing caish.org, the website of the Cambridge AI Safety Hub. Read READ
 
 ## How the site is built
 
-- Plain HTML, CSS and a little JavaScript. Do not add a framework, a package manager, a build tool or a CSS library.
+- Plain HTML, CSS and a little JavaScript, served as static files. Do not add a framework, a package manager, a build tool, a CSS library or server-side code.
 - Reuse the classes in `styles.css` and the patterns on similar pages before writing new CSS. Page-specific styles go in that page's own `<style>` block.
 - The nav and footer are copied into every page. A change to either must be made in every HTML file that has them.
 - New pages: copy the closest existing page, update the `<title>`, description and Open Graph tags, and keep the `styles.css?v=` and `enhancements.js?v=` links (the deploy stamps the version).
 - Short links and moved pages go in `_redirects`. Headers, including the Content-Security-Policy, go in `_headers`. If a page needs a new outside service (a form, an embed, a video host), add it to the policy there or it will be blocked.
 - Images go in `images/` with lowercase hyphenated names. Compress them first (under 500 KB, at most 1200 px wide). Always set `alt` text and `width`/`height`.
-- Never put API keys or tokens in the repository. Server-side secrets live in Cloudflare (see README.md, Hosting).
+- Never put API keys or tokens in the repository. Anything published here is public.
 
 ## Writing
 
@@ -32,4 +32,4 @@ You are editing caish.org, the website of the Cambridge AI Safety Hub. Read READ
 - The wording on `roles/*.html` is the record used for visa sponsorship. Change markup only, unless a director says otherwise.
 - `docs/archive/` holds old page versions on purpose.
 - The participant directory (`participants/`) only lists people who consented. Rebuild it with `tools/participants/build.py` and never add someone by hand. Andrea Caforio declined consent.
-- Unlisted pages (participants, hardware/schedule, feedback) stay out of the nav and keep their noindex settings.
+- Unlisted pages (participants, hardware/schedule) stay out of the nav and keep their noindex settings.

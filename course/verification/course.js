@@ -670,8 +670,6 @@ const CourseWorksheet = {
         try { localStorage.setItem(this.nameKey, this.nameField.value); } catch (error) {}
       });
     }
-    const submit = document.getElementById('course-ws-submit');
-    if (submit) submit.addEventListener('click', () => this.submit());
     this.renderFoot();
     document.addEventListener('course-auth-change', () => {
       this.pull();
@@ -742,33 +740,6 @@ const CourseWorksheet = {
       return String(meta.full_name || meta.name || user.email || '').trim();
     }
     return this.nameField ? this.nameField.value.trim() : '';
-  },
-
-  async submit() {
-    const status = document.getElementById('course-ws-status');
-    const name = this.displayName();
-    const answers = this.data();
-    if (!answers.q1 || !answers.q1.trim()) { status.textContent = 'Fill in at least question 1.'; return; }
-    if (!CourseAuth.session) { status.textContent = 'Sign in first.'; return; }
-    if (!name) { status.textContent = 'Could not identify your account. Sign in again.'; return; }
-    status.textContent = 'Submitting...';
-    try {
-      const response = await fetch('/api/sketch', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + CourseAuth.session.access_token
-        },
-        body: JSON.stringify({ name, answers })
-      });
-      const body = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(body.message || 'Could not submit.');
-      this.submitted = true;
-      status.textContent = 'Submitted. You can revise and resubmit until 16 August.';
-      document.getElementById('course-ws-submit').textContent = 'Resubmit sketch';
-    } catch (error) {
-      status.textContent = (error.message || 'Could not submit.') + ' If this persists, email hello@caish.org.';
-    }
   },
 
   data() {
