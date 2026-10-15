@@ -52,10 +52,10 @@ The navigation bar and footer are copied into every page. To add a menu item, ch
 
 ### Pages
 
-- Main: home (`index`), about, hiring, privacy, terms.
+- Main: home (`index`, whose sign-up form sends people to the soc-ai-safety Sympa list), about, hiring, privacy, terms.
 - Programmes: fellowship, policy, desk, mars, research (MARS publications), hardware (HAP), course/verification.
 - Unlisted: apply (Fellowship or Desk chooser, shared directly), course (HAP 2026 pre-work), feedback, hardware/schedule, participants, verify.
-- Small forwarding pages: alignmentfellowship, mail (newsletter sign-up), mars-apply, hardware-eoi, mentor.
+- Small forwarding pages: alignmentfellowship, mail (Sympa sign-up page for soc-ai-safety), mars-apply, hardware-eoi, mentor.
 
 ## Common tasks
 

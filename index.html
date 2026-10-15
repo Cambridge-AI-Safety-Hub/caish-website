@@ -28,8 +28,6 @@
   <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <link rel="dns-prefetch" href="https://lu.ma">
-  <link rel="dns-prefetch" href="https://share-eu1.hsforms.com">
-  <link rel="dns-prefetch" href="https://forms-eu1.hsforms.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -174,15 +172,14 @@
         <h2 id="newsletter-title">Stay in touch</h2>
         <p>Occasional electronic mailings on programmes we are running, application deadlines, and ways to get involved with CAISH.</p>
       </div>
-      <form id="cta-signup-form" class="newsletter-form" novalidate>
+      <!-- Signs people up to the soc-ai-safety list on the University's Sympa service, which asks them to confirm -->
+      <form id="cta-signup-form" class="newsletter-form" action="https://lists.cam.ac.uk/sympa/subscribe/soc-ai-safety" method="get">
         <div class="newsletter-form-row">
-          <input type="email" id="cta-email" class="newsletter-input" placeholder="Email address" required autocomplete="email" aria-label="Email address">
+          <input type="email" id="cta-email" name="email" class="newsletter-input" placeholder="Email address" required autocomplete="email" aria-label="Email address">
           <button type="submit" class="newsletter-submit">
             <span class="newsletter-submit-text">Sign up</span>
-            <span class="newsletter-submit-loading" hidden>Sending&hellip;</span>
           </button>
         </div>
-        <p class="newsletter-form-msg" id="cta-form-msg" hidden></p>
       </form>
     </div>
   </section>
@@ -281,74 +278,6 @@
       }
     };
 
-    const NewsletterForm = {
-      init() {
-        const form = document.getElementById('cta-signup-form');
-        if (!form) return;
-        form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          this.submit(form);
-        });
-      },
-
-      async submit(form) {
-        const email = document.getElementById('cta-email');
-        const msg = document.getElementById('cta-form-msg');
-        const submitText = form.querySelector('.newsletter-submit-text');
-        const submitLoading = form.querySelector('.newsletter-submit-loading');
-        const btn = form.querySelector('.newsletter-submit');
-
-        if (!email.value || !email.validity.valid) {
-          this.showMsg(msg, 'Please enter a valid email address.', true);
-          return;
-        }
-
-        btn.disabled = true;
-        submitText.hidden = true;
-        submitLoading.hidden = false;
-
-        try {
-          const response = await fetch(
-            'https://forms-eu1.hsforms.com/submissions/v3/integration/submit/146910749/28f7d478-2051-408f-8e04-4fa44905dfb9',
-            {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                fields: [
-                  { name: 'email', value: email.value }
-                ],
-                context: {
-                  pageUri: window.location.href,
-                  pageName: 'CAISH Homepage'
-                }
-              })
-            }
-          );
-
-          if (response.ok || response.status === 200) {
-            this.showMsg(msg, "You're subscribed! We'll be in touch.", false);
-            email.value = '';
-          } else {
-            const data = await response.json().catch(() => null);
-            const errMsg = (data && data.errors && data.errors[0] && data.errors[0].message) || 'Something went wrong. Please try again.';
-            this.showMsg(msg, errMsg, true);
-          }
-        } catch {
-          this.showMsg(msg, 'Network error. Please try again.', true);
-        } finally {
-          btn.disabled = false;
-          submitText.hidden = false;
-          submitLoading.hidden = true;
-        }
-      },
-
-      showMsg(el, text, isError) {
-        el.textContent = text;
-        el.hidden = false;
-        el.className = 'newsletter-form-msg ' + (isError ? 'newsletter-form-error' : 'newsletter-form-success');
-      }
-    };
-
     const BackToTop = {
       init() {
         const btn = document.querySelector('.back-to-top');
@@ -372,12 +301,10 @@
       ? document.addEventListener('DOMContentLoaded', () => {
           MobileNav.init();
           BackToTop.init();
-          NewsletterForm.init();
         })
       : (() => {
           MobileNav.init();
           BackToTop.init();
-          NewsletterForm.init();
         })();
   </script>
 </body>
