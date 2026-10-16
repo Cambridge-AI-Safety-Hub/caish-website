@@ -14,17 +14,19 @@
 /lunch  https://luma.com/caish  302
 
 # Old page names
+/course/verification  /hardware  301
 /video  /  301
 /hannes  /  301
 /cam  /  301
 /puria  /  301
 /careers  /hiring  301
 /hap  /hardware  301
-/hardware/feedback  /course/verification/  301
+/hardware/feedback  /hardware  301
 /hap-2026-participants-3b604ec9ee  /participants/  301
 /hap/*  /hardware  301
-/hardware/feedback/*  /course/verification/  301
+/hardware/feedback/*  /hardware  301
 /hap-2026-participants-3b604ec9ee/*  /participants/:splat  301
 
 # Certificate links: every /verify/<ID> address shows verify.html, which reads the ID from the address
 /verify/*  /verify  200
+/course/verification/*  /hardware  301
