@@ -237,9 +237,10 @@ const CourseProgress = {
   }
 };
 
-// Optional sign-in so progress follows a user across devices. Everything here is
-// additive: if the library or config is missing, or the network fails, the course
-// runs exactly as it does signed out, on localStorage alone.
+// Sign-in (Supabase) was switched off in October 2026, and the pages no longer load
+// the Supabase library, so CourseAuth stays inert and progress lives in each
+// reader's browser (localStorage). The code is kept so sign-in could be restored
+// by loading a Supabase client and config again.
 const CourseAuth = {
   nameKey: 'caish-verification-ws-name',
   courseId: 'verification',
