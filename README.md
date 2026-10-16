@@ -36,7 +36,7 @@ Every change goes through a pull request. Nobody pushes to `main` directly.
 | `sw.js` | Service worker that makes repeat visits load faster. |
 | `images/` | All photos and logos. |
 | `videos/` | The HAP 2026 film shown on /hardware. Cloudflare serves files up to 25 MB, so compress a new video below that before adding it. |
-| `course/verification/` | The AI Workload Verification reading course, with sign-in and saved progress. |
+| `course/verification/` | The AI Workload Verification reading course. Progress saves in the reader's browser. |
 | `hardware/schedule/` | HAP 2026 week schedule (unlisted). |
 | `participants/` | HAP 2026 participant directory (unlisted, built by `tools/participants/`). |
 | `roles/` | Job descriptions linked from /hiring. |
@@ -73,7 +73,7 @@ The navigation bar and footer are copied into every page. To add a menu item, ch
 - Cloudflare: the site is a Worker called `caish-website` on the CAISH Cloudflare account (login ops@caish.org, in the Core vault in 1Password). Cloudflare also holds the caish.org domain and DNS.
 - Deploys: Cloudflare watches this repository. A merge to `main` builds and publishes the site. Every other branch gets a preview link. The build runs `bash cache-bust.sh`, then `npx wrangler deploy`.
 - Secrets: none. The site has no server code, so there are no API keys to look after.
-- Course sign-in: the verification course uses a Supabase project (`joggzpdemdmyvnlhtjte`) for logins and saved progress. The key in `course/verification/supabase-config.js` is public by design.
+- Course progress: the verification course saves which readings are done in each reader's browser. There is no sign-in.
 
 Which person owns which account is recorded in the CAISH systems and access doc.
 
@@ -83,4 +83,3 @@ Which person owns which account is recorded in the CAISH systems and access doc.
 - About 130 images in `images/` are no longer used by any page.
 - verify.html says "Alignment Fellowship Certificate" in its title even for HAP certificates.
 - `course/verification/4.html` asks people to share documents with gaurav@caish.org.
-- The Supabase project for course sign-in needs an ops@ owner.
