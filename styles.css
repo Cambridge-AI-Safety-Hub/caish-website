@@ -366,7 +366,7 @@
   .nav-home {
     display: flex;
     align-items: center;
-    gap: var(--space-3);
+    gap: 0.55rem;
     color: var(--black);
   }
 
@@ -376,8 +376,9 @@
 
   .nav-wordmark {
     font-family: var(--font-serif);
-    font-size: 0.95rem;
-    letter-spacing: -0.01em;
+    font-size: 1.5rem;
+    line-height: 1;
+    letter-spacing: 0.01em;
     white-space: nowrap;
   }
   
@@ -6654,11 +6655,7 @@
   }
 
   /* The inline critical CSS on each page sets the nav too, so these use .nav-inner to win */
-  @media (min-width: 761px) and (max-width: 999px) {
-    .nav-inner .nav-wordmark { display: none; }
-  }
-
-  @media (max-width: 760px) {
+  @media (max-width: 899px) {
     .nav-inner .nav-links { display: none; }
     .nav-inner .nav-toggle { display: block; }
   }

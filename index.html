@@ -50,7 +50,7 @@
     h1{font-size:clamp(2.4rem,5.5vw,3.8rem);line-height:1.2}
     nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(253,252,250,0.66);border-bottom:1px solid rgba(178,150,122,0.1);backdrop-filter:blur(20px) saturate(1.15);-webkit-backdrop-filter:blur(20px) saturate(1.15)}
     .nav-inner{display:flex;justify-content:space-between;align-items:center;padding:1rem 2.5rem;max-width:1000px;margin:0 auto}
-    .logo{height:32px;opacity:0.9}.nav-home{display:flex;align-items:center;gap:0.75rem;color:#1a1a1a;text-decoration:none}.nav-wordmark{font-family:'Libre Baskerville',Georgia,serif;font-size:0.95rem;white-space:nowrap}
+    .logo{height:32px;opacity:0.9}.nav-home{display:flex;align-items:center;gap:0.55rem;color:#1a1a1a;text-decoration:none}.nav-wordmark{font-family:'Libre Baskerville',Georgia,serif;font-size:1.5rem;line-height:1;letter-spacing:0.01em;white-space:nowrap}
     .nav-links{display:flex;gap:clamp(1rem,2.6vw,1.75rem);list-style:none}
     .nav-links a{font-size:0.75rem;color:#4a4a4a;text-decoration:none}
     .hero{max-width:1000px;margin:0 auto;padding:7rem 2.5rem 3rem;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2.5rem;align-items:center}
@@ -90,9 +90,9 @@
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <nav>
     <div class="nav-inner">
-      <a href="/" class="nav-home">
+      <a href="/" class="nav-home" aria-label="Cambridge AI Safety Hub home">
         <img src="/images/logo.png" class="logo" width="50" height="50" alt="">
-        <span class="nav-wordmark">Cambridge AI Safety Hub</span>
+        <span class="nav-wordmark">CAISH</span>
       </a>
       <ul class="nav-links">
         <li class="nav-has-dropdown"><a href="/fellowship">Courses <span class="nav-caret" aria-hidden="true"></span></a><ul class="nav-dropdown"><li><a href="/fellowship">Alignment Fellowship</a></li><li><a href="/policy">UK AI Policy Course</a></li></ul></li>
