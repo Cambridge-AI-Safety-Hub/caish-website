@@ -362,10 +362,28 @@
   .logo:hover {
     opacity: 1;
   }
+
+  .nav-home {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--black);
+  }
+
+  .nav-home:hover .logo {
+    opacity: 1;
+  }
+
+  .nav-wordmark {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
   
   .nav-links {
     display: flex;
-    gap: clamp(1rem, 3vw, var(--space-10));
+    gap: clamp(1rem, 2.6vw, 1.75rem);
     list-style: none;
   }
   
@@ -373,6 +391,7 @@
     position: relative;
     font-size: 0.75rem;
     letter-spacing: 0.03em;
+    white-space: nowrap;
     color: var(--dark-grey);
     transition: color 0.2s ease-out;
   }
@@ -6374,16 +6393,7 @@
     left: var(--space-10);
     right: var(--space-10);
     height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(26, 26, 26, 0.08) 15%,
-      rgba(26, 26, 26, 0.12) 35%,
-      rgba(224, 224, 224, 0.6) 50%,
-      rgba(26, 26, 26, 0.12) 65%,
-      rgba(26, 26, 26, 0.08) 85%,
-      transparent 100%
-    );
+    background: rgba(26, 26, 26, 0.12);
   }
 
   .footer-inner {
@@ -6641,6 +6651,16 @@
       grid-template-columns: repeat(2, 1fr);
     }
 
+  }
+
+  /* The inline critical CSS on each page sets the nav too, so these use .nav-inner to win */
+  @media (min-width: 761px) and (max-width: 999px) {
+    .nav-inner .nav-wordmark { display: none; }
+  }
+
+  @media (max-width: 760px) {
+    .nav-inner .nav-links { display: none; }
+    .nav-inner .nav-toggle { display: block; }
   }
 
   @media (max-width: 600px) {
