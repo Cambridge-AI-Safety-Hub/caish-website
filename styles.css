@@ -189,7 +189,7 @@
   /* Skip to Main Content Link */
   .skip-link {
     position: absolute;
-    top: -40px;
+    top: -100px;
     left: 0;
     background: var(--black);
     color: var(--white);
