@@ -2095,7 +2095,7 @@
   /* Directors */
   .directors {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-12);
     margin-bottom: var(--space-4);
   }
@@ -2137,8 +2137,6 @@
 
   .director-role {
     font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
     color: var(--mid-grey);
     margin-bottom: var(--space-4);
   }
