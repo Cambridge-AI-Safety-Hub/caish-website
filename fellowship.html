@@ -48,13 +48,13 @@
     h1{font-size:clamp(2rem,4vw,3rem);line-height:1.2}
     nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(253,252,250,0.66);border-bottom:1px solid rgba(178,150,122,0.1);backdrop-filter:blur(20px) saturate(1.15);-webkit-backdrop-filter:blur(20px) saturate(1.15)}
     .nav-inner{display:flex;justify-content:space-between;align-items:center;padding:1rem 2.5rem;max-width:1000px;margin:0 auto}
-    .logo{height:32px;opacity:0.9}
-    .nav-links{display:flex;gap:2.5rem;list-style:none}
+    .logo{height:32px;opacity:0.9}.nav-home{display:flex;align-items:center;gap:0.55rem;color:#1a1a1a;text-decoration:none}.nav-wordmark{font-family:'Libre Baskerville',Georgia,serif;font-size:1.5rem;line-height:1;letter-spacing:0.01em;white-space:nowrap}
+    .nav-links{display:flex;gap:clamp(1rem,2.6vw,1.75rem);list-style:none}
     .nav-links a{font-size:0.75rem;color:#4a4a4a;text-decoration:none}
     .page-header{max-width:1000px;margin:0 auto;padding:6.5rem 2.5rem 2rem}
     .label{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:#4a4a4a;margin-bottom:1.5rem;display:block}
     p{font-size:0.95rem;max-width:52ch;color:#4a4a4a}
-    .skip-link{position:absolute;top:-40px;left:0;background:#1a1a1a;color:#fefefe;padding:8px 16px;z-index:100}
+    .skip-link{position:absolute;top:-100px;left:0;background:#1a1a1a;color:#fefefe;padding:8px 16px;z-index:100}
     .nav-toggle{display:none}
     @media(max-width:600px){.nav-links{display:none}.nav-toggle{display:block;background:none;border:none;cursor:pointer;padding:0.5rem}.nav-toggle span{display:block;width:24px;height:2px;background:#1a1a1a;margin:5px 0}.page-header{padding-top:6rem}}
     .fellowship-hero{margin:1rem auto 1.5rem;max-width:min(94vw,840px)}
@@ -82,8 +82,9 @@
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <nav>
     <div class="nav-inner">
-      <a href="/" aria-label="Home">
-        <img src="/images/logo.png" class="logo" width="50" height="50">
+      <a href="/" class="nav-home" aria-label="Cambridge AI Safety Hub home">
+        <img src="/images/logo.png" class="logo" width="50" height="50" alt="">
+        <span class="nav-wordmark">CAISH</span>
       </a>
       <ul class="nav-links">
         <li class="nav-has-dropdown"><a href="/fellowship" class="active">Courses <span class="nav-caret" aria-hidden="true"></span></a><ul class="nav-dropdown"><li><a href="/fellowship" class="active">Alignment Fellowship</a></li><li><a href="/policy">UK AI Policy Course</a></li></ul></li>
