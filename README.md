@@ -53,7 +53,7 @@ The navigation bar and footer are copied into every page. To add a menu item, ch
 
 - Main: home (`index`, whose sign-up form sends people to the soc-ai-safety Sympa list), about, hiring, privacy, terms.
 - Programmes: fellowship, policy, desk, mars, research (MARS publications), hardware (HAP).
-- Offline: the AI Workload Verification Course (taken down October 2026, still in the git history, and /course/verification redirects to /hardware).
+- Offline: the AI Workload Verification Course, taken down in October 2026. /course/verification redirects to /hardware. The full course is kept at the git tag `verification-course-archive` (`git checkout verification-course-archive -- course/verification` brings it back).
 - Unlisted: apply (Fellowship or Desk chooser, shared directly), course (HAP 2026 pre-work), feedback, hardware/schedule, participants, verify.
 - Small forwarding pages: alignmentfellowship, mail (Sympa sign-up page for soc-ai-safety), mars-apply, hardware-eoi, mentor.
 
