@@ -13,6 +13,10 @@
 /social  https://luma.com/caish  302
 /lunch  https://luma.com/caish  302
 
+# Michaelmas 2026 application chooser, closed after the 18 October deadline. Remove these to reopen apply.html
+/apply  /  302
+/apply.html  /  302
+
 # Old page names
 /course/verification  /hardware  301
 /video  /  301
