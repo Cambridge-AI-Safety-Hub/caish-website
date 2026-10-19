@@ -4,26 +4,26 @@ This is the website of the Cambridge AI Safety Hub (CAISH). It is plain HTML and
 
 ## Who looks after it
 
-- Maintainer: _to be decided_. Reviews and merges pull requests, keeps this README current and owns the design.
-- Backup: _to be decided_. Merges urgent fixes when the maintainer is away.
+- Maintainer: Justin Dollman. Owns the site, its design and any larger change or overhaul. Reviews pull requests, keeps this README current.
+- Editors: Sana and Jojo. Make routine changes (dates, people, programme details, fixes) through pull requests.
+- Backup: _to be decided_. Merges urgent fixes when Justin is away.
 - Design: see [docs/design.md](docs/design.md) for how the site should look and read.
 
-Anyone in CAISH can suggest a change. Changes go live only when the maintainer merges them.
+Anyone in CAISH can suggest a change by opening a pull request or asking an editor. Changes go live only when they are merged into `main`.
 
 ## Making a change
 
-Every change goes through a pull request. Nobody pushes to `main` directly.
+Every change goes through a pull request, and `main` only accepts reviewed pull requests.
 
-1. Make the change on a new branch (one of the three ways below).
-2. Open a pull request. Cloudflare builds a preview of it and posts the link on the pull request.
+1. Make the change on a new branch. The simplest way is on github.com: open the file, click the pencil icon, edit, and choose "Create a new branch and start a pull request".
+2. Fill in the short checklist that appears in the pull request. Cloudflare builds a preview of the change and posts the link on the pull request.
 3. Check the preview on your phone and laptop.
-4. Ask the maintainer to review. When they merge it, caish.org updates within a minute or two.
+4. Get a review. Routine changes can be approved by any editor. Larger changes (new pages, layout or navigation changes, anything across many pages) need Justin. Once approved, merge it and caish.org updates within a minute or two.
 
-**With Claude on the web.** This is the easiest route and needs no installation. Go to [claude.ai/code](https://claude.ai/code), connect your GitHub account, pick this repository and describe the change in plain words (for example "add Jane Doe to the committee on the About page, photo attached"). Claude reads [CLAUDE.md](CLAUDE.md), makes the edit on a branch and opens the pull request. Then follow steps 2 to 4.
+Claude can help with bigger edits if you want it to, but it is optional:
 
-**With Claude Code on your laptop.** Clone the repository, run `claude` inside the folder and describe the change. Ask it to open a pull request when it is done. You can check the result before pushing with `npx wrangler dev`, which serves the site at http://localhost:8787.
-
-**By hand on GitHub.** For a typo, open the file on github.com, click the pencil icon, edit and choose "Create a new branch and start a pull request".
+- On the web: go to [claude.ai/code](https://claude.ai/code), connect GitHub, pick this repository and describe the change. It follows [CLAUDE.md](CLAUDE.md) and opens a pull request, which then goes through steps 2 to 4 like any other.
+- On a laptop: clone the repository, run `claude` in the folder and ask it to open a pull request. `npx wrangler dev` serves the site at http://localhost:8787 for checking before you push.
 
 ## What is where
 

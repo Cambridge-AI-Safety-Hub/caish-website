@@ -7,7 +7,7 @@ You are editing caish.org, the website of the Cambridge AI Safety Hub. Read READ
 - Work on a new branch named after the change (`update-committee`, `fix-mars-dates`). Never commit to `main`.
 - Keep each pull request to one change. Write the title and description so a non-technical reviewer can follow them, and say which pages changed.
 - Before opening the pull request, run `npx wrangler dev` and load each page you touched at http://localhost:8787. Check that it renders, that links work and that the layout holds at phone width (around 375 px).
-- Tell the person to check the preview link Cloudflare posts on the pull request, and that the maintainer named in README.md merges it.
+- Tell the person to check the preview link Cloudflare posts on the pull request and fill in the pull request checklist. Routine changes can be approved by any editor. Larger changes (new pages, layout, navigation, changes across many pages) need Justin, the maintainer named in README.md.
 
 ## How the site is built
 
