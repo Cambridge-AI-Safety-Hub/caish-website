@@ -36,7 +36,6 @@ Every change goes through a pull request. Nobody pushes to `main` directly.
 | `sw.js` | Service worker that makes repeat visits load faster. |
 | `images/` | All photos and logos. |
 | `videos/` | The HAP 2026 film shown on /hardware. Cloudflare serves files up to 25 MB, so compress a new video below that before adding it. |
-| `course/verification/` | The AI Workload Verification reading course, with sign-in and saved progress. |
 | `hardware/schedule/` | HAP 2026 week schedule (unlisted). |
 | `participants/` | HAP 2026 participant directory (unlisted, built by `tools/participants/`). |
 | `roles/` | Job descriptions linked from /hiring. |
@@ -53,7 +52,8 @@ The navigation bar and footer are copied into every page. To add a menu item, ch
 ### Pages
 
 - Main: home (`index`, whose sign-up form sends people to the soc-ai-safety Sympa list), about, hiring, privacy, terms.
-- Programmes: fellowship, policy, desk, mars, research (MARS publications), hardware (HAP), course/verification.
+- Programmes: fellowship, policy, desk, mars, research (MARS publications), hardware (HAP).
+- Offline: the AI Workload Verification Course, taken down in October 2026. /course/verification redirects to /hardware. The full course is kept at the git tag `verification-course-archive` (`git checkout verification-course-archive -- course/verification` brings it back).
 - Unlisted: apply (Fellowship or Desk chooser, shared directly), course (HAP 2026 pre-work), feedback, hardware/schedule, participants, verify.
 - Small forwarding pages: alignmentfellowship, mail (Sympa sign-up page for soc-ai-safety), mars-apply, hardware-eoi, mentor.
 
@@ -73,7 +73,6 @@ The navigation bar and footer are copied into every page. To add a menu item, ch
 - Cloudflare: the site is a Worker called `caish-website` on the CAISH Cloudflare account (login ops@caish.org, in the Core vault in 1Password). Cloudflare also holds the caish.org domain and DNS.
 - Deploys: Cloudflare watches this repository. A merge to `main` builds and publishes the site. Every other branch gets a preview link. The build runs `bash cache-bust.sh`, then `npx wrangler deploy`.
 - Secrets: none. The site has no server code, so there are no API keys to look after.
-- Course sign-in: the verification course uses a Supabase project (`joggzpdemdmyvnlhtjte`) for logins and saved progress. The key in `course/verification/supabase-config.js` is public by design.
 
 Which person owns which account is recorded in the CAISH systems and access doc.
 
@@ -82,5 +81,3 @@ Which person owns which account is recorded in the CAISH systems and access doc.
 - `images/og-image.png` (the link-preview image for 12 pages) does not exist, so those pages show no image when shared.
 - About 130 images in `images/` are no longer used by any page.
 - verify.html says "Alignment Fellowship Certificate" in its title even for HAP certificates.
-- `course/verification/4.html` asks people to share documents with gaurav@caish.org.
-- The Supabase project for course sign-in needs an ops@ owner.
