@@ -18,6 +18,7 @@ You are editing caish.org, the website of the Cambridge AI Safety Hub. Read READ
 - Short links and moved pages go in `_redirects`. Headers, including the Content-Security-Policy, go in `_headers`. If a page needs a new outside service (a form, an embed, a video host), add it to the policy there or it will be blocked.
 - Images go in `images/` with lowercase hyphenated names. Compress them first (under 500 KB, at most 1200 px wide). Always set `alt` text and `width`/`height`.
 - Never put API keys or tokens in the repository. Anything published here is public.
+- A change that adds or removes an outside service holding personal data (a form, booking tool, email or interview service) also updates `privacy.html` and its effective date. README.md, under Privacy notice, has the steps.
 
 ## Writing
 

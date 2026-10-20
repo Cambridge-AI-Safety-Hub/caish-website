@@ -68,6 +68,20 @@ The navigation bar and footer are copied into every page. To add a menu item, ch
 - Participants: `AIRTABLE_TOKEN=... python3 tools/participants/build.py` rebuilds the directory from Airtable. It only includes people who gave website consent. Andrea Caforio declined, so never add him by hand.
 - Roles: the wording on `roles/*.html` is the public record for visa sponsorship. Change markup if needed, but leave the words alone unless a director says otherwise.
 
+## Privacy notice
+
+`privacy.html` is the CAISH privacy notice. Meridian Impact CIC is the data controller. Section 4 lists every outside service that holds personal data for CAISH, and section 2 names some of them again.
+
+Update it in the same pull request as the change that makes it out of date:
+
+- Services: CAISH starts or stops using a tool that holds people's data (forms, email, scheduling, interviews, AI tools). Add or remove it in section 4 and wherever section 2 names it.
+- Retention: how long CAISH keeps something changes. Update section 5.
+- Purposes: CAISH wants to use people's data for something new. Section 9 promises to tell people directly before that happens, so Justin reviews it and the people affected hear first.
+
+Then set the effective date at the top to the day it merges and move the old date to "Previous version". Git keeps every earlier version (`git log -p privacy.html`).
+
+The CAISH systems and access doc lists every account CAISH holds. Whenever an account is opened or closed there, check whether section 4 needs the same change.
+
 ## Hosting
 
 - Cloudflare: the site is a Worker called `caish-website` on the CAISH Cloudflare account (login ops@caish.org, in the Core vault in 1Password). Cloudflare also holds the caish.org domain and DNS.
