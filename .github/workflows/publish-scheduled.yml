@@ -1,0 +1,37 @@
+# Publishes pages from scheduled/ when their time arrives. See README.md, "Scheduled pages".
+name: Publish scheduled pages
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-scheduled
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Publish anything that is due
+        run: python3 tools/scheduled/publish.py
+      - name: Save the result to main
+        env:
+          PUSH_TOKEN: ${{ secrets.SCHEDULE_PUSH_TOKEN }}
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing due."
+            exit 0
+          fi
+          git config user.name "CAISH schedule"
+          git config user.email "ops@caish.org"
+          git commit -m "Publish scheduled pages"
+          git push "https://x-access-token:${PUSH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:main

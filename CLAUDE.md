@@ -28,6 +28,13 @@ You are editing caish.org, the website of the Cambridge AI Safety Hub. Read READ
 - Keep copy plain and specific. Avoid marketing phrasing, rhetorical contrasts ("not X, but Y") and punchy one-line closers.
 - Describe CAISH as fiscally sponsored by Meridian Impact CIC, never as run by Meridian or a project of it.
 
+## Application rounds
+
+- Every programme page has an open version and a closed version. A pull request that opens a round also schedules the closed version. README.md, under Scheduled pages, has the steps.
+- Closed pages say "Express Interest" on the main button, link to that programme's interest form and say "We'll contact you when applications open."
+- The scheduled publishing job is the one exception to the rule against build tools. It runs on GitHub and the site stays plain files.
+- Closing the Airtable form is a separate job, arranged case by case.
+
 ## Things to leave alone
 
 - The wording on `roles/*.html` is the record used for visa sponsorship. Change markup only, unless a director says otherwise.

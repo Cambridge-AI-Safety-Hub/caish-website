@@ -15,3 +15,4 @@ LICENSE
 wrangler.jsonc
 cache-bust.sh
 *.sh
+scheduled
