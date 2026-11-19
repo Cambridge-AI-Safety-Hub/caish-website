@@ -111,7 +111,7 @@ The CAISH systems and access doc lists every account CAISH holds. Whenever an ac
 ## Hosting
 
 - Cloudflare: the site is a Worker called `caish-website` on the CAISH Cloudflare account (login ops@caish.org, in the Core vault in 1Password). Cloudflare also holds the caish.org domain and DNS.
-- Deploys: Cloudflare watches this repository. A merge to `main` builds and publishes the site. Every other branch gets a preview link. The build runs `bash cache-bust.sh`, then `npx wrangler deploy`.
+- Deploys: Cloudflare watches this repository. A merge to `main` builds and publishes the site. Every other branch gets a preview link. The build runs `bash cache-bust.sh`, then `npx wrangler deploy` on `main` and `npx wrangler preview` on other branches. The preview command needs the `previews` block in `wrangler.jsonc`, so leave it in place even though it is empty.
 - Secrets: none. The site has no server code, so there are no API keys to look after.
 
 Which person owns which account is recorded in the CAISH systems and access doc.
