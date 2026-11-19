@@ -13,6 +13,10 @@
 /social  https://luma.com/caish  302
 /lunch  https://luma.com/caish  302
 
+# Gaurav's booking pages, straight to SavvyCal so they work without calendar.caish.org
+/gaurav  https://savvycal.com/gauraventh/meet  302
+/gwide  https://savvycal.com/gauraventh/wide  302
+
 # Old page names
 /course/verification  /hardware  301
 /video  /  301
