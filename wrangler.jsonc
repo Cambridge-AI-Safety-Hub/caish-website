@@ -7,5 +7,8 @@
     "directory": ".",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page"
-  }
+  },
+  // Branch builds run `npx wrangler preview`, which stops unless this block exists.
+  // It stays empty: the settings above apply to previews too.
+  "previews": {}
 }
