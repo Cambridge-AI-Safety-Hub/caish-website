@@ -68,10 +68,50 @@ The navigation bar and footer are copied into every page. To add a menu item, ch
 - Participants: `AIRTABLE_TOKEN=... python3 tools/participants/build.py` rebuilds the directory from Airtable. It only includes people who gave website consent. Andrea Caforio declined, so never add him by hand.
 - Roles: the wording on `roles/*.html` is the public record for visa sponsorship. Change markup if needed, but leave the words alone unless a director says otherwise.
 
+## Scheduled pages
+
+Pages can go live at a set time without anyone being online. Use this for application rounds, where every programme page has an open version and a closed version.
+
+1. Save the full version of the page in `scheduled/`, named after the page and round (`scheduled/fellowship-lent-2027-closed.html`).
+2. Add it to `scheduled/schedule.json`, with the time including its UK offset (`+00:00` in winter, `+01:00` in summer):
+
+   ```json
+   [
+     {
+       "at": "2027-01-24T12:00:00+00:00",
+       "page": "fellowship.html",
+       "source": "scheduled/fellowship-lent-2027-closed.html"
+     }
+   ]
+   ```
+
+3. Merge as usual. A GitHub job checks every 15 minutes and copies anything due over the live page. Cloudflare then publishes it, so a change can land up to about 30 minutes late, or later if GitHub is busy.
+
+Things to know:
+
+- A scheduled page replaces the whole live page, so an edit made to the live page after you wrote the scheduled copy is lost unless you make it in both. This includes nav and footer changes. `python3 tools/scheduled/publish.py --check` lists any at risk.
+- The `scheduled/` folder is not served on caish.org, but the repository is public, so anyone can read it on GitHub.
+- The job pushes to `main` with the `SCHEDULE_PUSH_TOKEN` repository secret, a fine-grained token from the cambridgeaisafetyhub account with Contents read and write on this repository. If it expires, scheduled pages stop publishing and the job fails.
+- Closing an Airtable form is separate and arranged case by case.
+
+## Privacy notice
+
+`privacy.html` is the CAISH privacy notice. Meridian Impact CIC is the data controller. Section 4 lists every outside service that holds personal data for CAISH, and section 2 names some of them again.
+
+Update it in the same pull request as the change that makes it out of date:
+
+- Services: CAISH starts or stops using a tool that holds people's data (forms, email, scheduling, interviews, AI tools). Add or remove it in section 4 and wherever section 2 names it.
+- Retention: how long CAISH keeps something changes. Update section 5.
+- Purposes: CAISH wants to use people's data for something new. Section 9 promises to tell people directly before that happens, so Justin reviews it and the people affected hear first.
+
+Then set the effective date at the top to the day it merges and move the old date to "Previous version". Git keeps every earlier version (`git log -p privacy.html`).
+
+The CAISH systems and access doc lists every account CAISH holds. Whenever an account is opened or closed there, check whether section 4 needs the same change.
+
 ## Hosting
 
 - Cloudflare: the site is a Worker called `caish-website` on the CAISH Cloudflare account (login ops@caish.org, in the Core vault in 1Password). Cloudflare also holds the caish.org domain and DNS.
-- Deploys: Cloudflare watches this repository. A merge to `main` builds and publishes the site. Every other branch gets a preview link. The build runs `bash cache-bust.sh`, then `npx wrangler deploy`.
+- Deploys: Cloudflare watches this repository. A merge to `main` builds and publishes the site. Every other branch gets a preview link. The build runs `bash cache-bust.sh`, then `npx wrangler deploy` on `main` and `npx wrangler preview` on other branches. The preview command needs the `previews` block in `wrangler.jsonc`, so leave it in place even though it is empty.
 - Secrets: none. The site has no server code, so there are no API keys to look after.
 
 Which person owns which account is recorded in the CAISH systems and access doc.

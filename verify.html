@@ -882,8 +882,7 @@
               '</div>' +
             '</div>' +
             '<div class="cert-signatures">' +
-              this.renderSignatureBlock('Gaurav Yadav', 'Co-Director', '/images/gaurav-signature.png') +
-              this.renderSignatureBlock('Justin Dollman', 'Co-Director', '/images/justin-signature.png') +
+              this.renderSignatures(cohort.issuedDate) +
             '</div>' +
           '</div>' +
           '<div class="verify-actions">' +
@@ -901,6 +900,15 @@
           }
           setTimeout(function() { btn.textContent = 'Copy link'; }, 2000);
         });
+      },
+
+      // Certificates issued while CAISH had two co-directors (to 13 November 2026) keep both signatures.
+      renderSignatures(issuedDate) {
+        if (issuedDate && issuedDate <= '2026-11-13') {
+          return this.renderSignatureBlock('Gaurav Yadav', 'Co-Director', '/images/gaurav-signature.png') +
+            this.renderSignatureBlock('Justin Dollman', 'Co-Director', '/images/justin-signature.png');
+        }
+        return this.renderSignatureBlock('Justin Dollman', 'Director', '/images/justin-signature.png');
       },
 
       renderSignatureBlock(name, role, imagePath) {

@@ -18,6 +18,7 @@ You are editing caish.org, the website of the Cambridge AI Safety Hub. Read READ
 - Short links and moved pages go in `_redirects`. Headers, including the Content-Security-Policy, go in `_headers`. If a page needs a new outside service (a form, an embed, a video host), add it to the policy there or it will be blocked.
 - Images go in `images/` with lowercase hyphenated names. Compress them first (under 500 KB, at most 1200 px wide). Always set `alt` text and `width`/`height`.
 - Never put API keys or tokens in the repository. Anything published here is public.
+- A change that adds or removes an outside service holding personal data (a form, booking tool, email or interview service) also updates `privacy.html` and its effective date. README.md, under Privacy notice, has the steps.
 
 ## Writing
 
@@ -26,6 +27,13 @@ You are editing caish.org, the website of the Cambridge AI Safety Hub. Read READ
 - No semicolons.
 - Keep copy plain and specific. Avoid marketing phrasing, rhetorical contrasts ("not X, but Y") and punchy one-line closers.
 - Describe CAISH as fiscally sponsored by Meridian Impact CIC, never as run by Meridian or a project of it.
+
+## Application rounds
+
+- Every programme page has an open version and a closed version. A pull request that opens a round also schedules the closed version. README.md, under Scheduled pages, has the steps.
+- Closed pages say "Express Interest" on the main button, link to that programme's interest form and say "We'll contact you when applications open."
+- The scheduled publishing job is the one exception to the rule against build tools. It runs on GitHub and the site stays plain files.
+- Closing the Airtable form is a separate job, arranged case by case.
 
 ## Things to leave alone
 
